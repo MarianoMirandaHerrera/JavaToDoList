@@ -2,7 +2,7 @@ import java.awt.*;
 
 public class CommonConstants {
     // frame config
-    public static final Dimension GUI_SIZE = new Dimension(1000, 750);
+    public static final Dimension GUI_SIZE = new Dimension(1920, 1080);
 
     // banner config
     public static final Dimension BANNER_SIZE = new Dimension(GUI_SIZE.width/2, 50);
