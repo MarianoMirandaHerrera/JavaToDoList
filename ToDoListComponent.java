@@ -10,6 +10,7 @@ public class ToDoListComponent extends JPanel implements ActionListener {
     private JTextPane taskField;
     private JButton deleteButton;
     ArrayList<TaskComponent> tasks;
+    private int id;
 
     public JTextPane getTaskField() {
         return taskField;
@@ -18,9 +19,10 @@ public class ToDoListComponent extends JPanel implements ActionListener {
     // this panel is used so that we can make updates to the task component panel when deleting tasks
     private JPanel parentPanel;
 
-    public ToDoListComponent(JPanel parentPanel){
+    public ToDoListComponent(JPanel parentPanel, int size){
         this.parentPanel = parentPanel;
         tasks = new ArrayList<>();
+        id = size;
         // task field
         taskField = new JTextPane();
         taskField.setBorder(BorderFactory.createLineBorder(Color.BLACK));

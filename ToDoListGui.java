@@ -10,6 +10,7 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
     private JPanel toDoListPanel, taskPanel, taskComponentPanel, toDoListComponentPanel;
     private ArrayList<ToDoListComponent> toDoLists;
     private ToDoListComponent currentToDoList;
+    private DatabaseConnection dbc;
 
     public ToDoListGui() {
         super("To Do List Application");
@@ -18,9 +19,17 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
         pack();
         setLocationRelativeTo(null);
         setResizable(false);
-        setLayout(null);
-        toDoLists = new ArrayList<>();
+        setLayout(null);        
+
+        repopulate();
         addGuiComponents();
+    }
+
+    private void repopulate() {
+        toDoLists = new ArrayList<>();
+        dbc = new DatabaseConnection();
+
+
     }
 
     private void addGuiComponents() {
@@ -88,6 +97,7 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
+        // if their is a selected to do list and the the Add Task button is pressed
         if(currentToDoList!=null&&command.equalsIgnoreCase("Add Task")){
             // create a task component
             TaskComponent taskComponent = new TaskComponent(taskComponentPanel);
@@ -100,6 +110,8 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
                 previousTask.getTaskField().setBackground(null);
             }
 
+            
+
             // make the task field request focus after creation
             taskComponent.getTaskField().requestFocus();
             repaint();
@@ -107,13 +119,20 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
         }
 
         if(command.equalsIgnoreCase("Add To Do List")){
+            // checks if their is a currently selected toDoList
+            // true: sets the visibility of the tasks of the current todolist to false
             if (currentToDoList!=null) {
                 for (int i = 0; i < currentToDoList.tasks.size(); i++){
                     currentToDoList.tasks.get(i).setVisible(false);
                 }
             }
-            // create a task component
-            ToDoListComponent toDoListComponent = new ToDoListComponent(toDoListComponentPanel);
+
+            // create a todolist component
+            // adds a mouse listener to the todolist
+            // sets the currentToDoList to the newly created todolistcomponent
+            // adds the todolist component to the panel
+            // adds the todolistcomponent to the arraylist of todolists
+            ToDoListComponent toDoListComponent = new ToDoListComponent(toDoListComponentPanel, toDoLists.size()+1);
             toDoListComponent.addMouseListener(this);
             currentToDoList = toDoListComponent;
             toDoListComponentPanel.add(toDoListComponent);
