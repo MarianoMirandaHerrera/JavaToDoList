@@ -9,13 +9,14 @@ public class TaskComponent extends JPanel implements ActionListener {
     private JCheckBox checkBox;
     private JTextPane taskField;
     private JButton deleteButton;
-
+    private JButton editButton;
     public JTextPane getTaskField() {
         return taskField;
     }
 
     // this panel is used so that we can make updates to the task component panel when deleting tasks
     private JPanel parentPanel;
+    
 
     public TaskComponent(JPanel parentPanel){
         this.parentPanel = parentPanel;
@@ -25,6 +26,7 @@ public class TaskComponent extends JPanel implements ActionListener {
         taskField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         taskField.setPreferredSize(CommonConstants.TASKFIELD_SIZE);
         taskField.setContentType("text/html");
+        taskField.setEditable(false);
         taskField.addFocusListener(new FocusListener() {
             // indicate which task field is currently being edited
             @Override
@@ -46,14 +48,21 @@ public class TaskComponent extends JPanel implements ActionListener {
 
         // delete button
         deleteButton = new JButton("X");
-        deleteButton.setPreferredSize(CommonConstants.DELETE_BUTTON_SIZE);
+        deleteButton.setPreferredSize((CommonConstants.DELETE_BUTTON_SIZE));
         deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         deleteButton.addActionListener(this);
+
+        // edit button
+        editButton = new JButton("E");
+        editButton.setPreferredSize(CommonConstants.DELETE_BUTTON_SIZE);
+        editButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        editButton.addActionListener(this);
 
         // add to this taskcomponent
         add(checkBox);
         add(taskField);
         add(deleteButton);
+        add(editButton);
     }
 
     @Override
@@ -75,6 +84,14 @@ public class TaskComponent extends JPanel implements ActionListener {
             parentPanel.remove(this);
             parentPanel.repaint();
             parentPanel.revalidate();
+        }
+
+        if(e.getActionCommand().equalsIgnoreCase("E")){
+           if (taskField.isEditable()){
+            taskField.setEditable(false);
+           } else {
+            taskField.setEditable(true);
+           }
         }
     }
 }
