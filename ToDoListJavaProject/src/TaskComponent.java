@@ -10,6 +10,8 @@ public class TaskComponent extends JPanel implements ActionListener {
     private JTextPane taskField;
     private JButton deleteButton;
     private JButton editButton;
+    private int taskId;
+
     public JTextPane getTaskField() {
         return taskField;
     }
@@ -18,8 +20,9 @@ public class TaskComponent extends JPanel implements ActionListener {
     private JPanel parentPanel;
     
 
-    public TaskComponent(JPanel parentPanel){
+    public TaskComponent(JPanel parentPanel, int taskId){
         this.parentPanel = parentPanel;
+        this.taskId = taskId;
 
         // task field
         taskField = new JTextPane();

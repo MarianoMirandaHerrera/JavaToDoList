@@ -100,7 +100,7 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
         // if their is a selected to do list and the the Add Task button is pressed
         if(currentToDoList!=null&&command.equalsIgnoreCase("Add Task")){
             // create a task component
-            TaskComponent taskComponent = new TaskComponent(taskComponentPanel);
+            TaskComponent taskComponent = new TaskComponent(taskComponentPanel, currentToDoList.tasks.size()+1);
             taskComponentPanel.add(taskComponent);
             currentToDoList.tasks.add(taskComponent);
             // make the previous task appear disabled

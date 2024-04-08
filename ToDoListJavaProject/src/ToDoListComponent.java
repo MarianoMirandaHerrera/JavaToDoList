@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class ToDoListComponent extends JPanel implements ActionListener {
     private JTextPane taskField;
     private JButton deleteButton;
+    private JButton editButton;
     ArrayList<TaskComponent> tasks;
     private int id;
 
@@ -23,11 +24,13 @@ public class ToDoListComponent extends JPanel implements ActionListener {
         this.parentPanel = parentPanel;
         tasks = new ArrayList<>();
         id = size;
+
         // task field
         taskField = new JTextPane();
         taskField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         taskField.setPreferredSize(CommonConstants.TASKFIELD_SIZE);
         taskField.setContentType("text/html");
+        taskField.setEditable(false);
         taskField.addFocusListener(new FocusListener() {
             // indicate which task field is currently being edited
             @Override
@@ -47,10 +50,17 @@ public class ToDoListComponent extends JPanel implements ActionListener {
         deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         deleteButton.addActionListener(this);
 
+        // edit button
+        editButton = new JButton("E");
+        editButton.setPreferredSize(CommonConstants.DELETE_BUTTON_SIZE);
+        editButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        editButton.addActionListener(this);
+
         // add to this taskcomponent
         setBorder(BorderFactory.createLoweredBevelBorder());
         add(taskField);
         add(deleteButton);
+        add(editButton);
     }
 
     @Override
@@ -63,6 +73,16 @@ public class ToDoListComponent extends JPanel implements ActionListener {
             parentPanel.remove(this);
             parentPanel.repaint();
             parentPanel.revalidate();
+        }
+
+        if (e.getActionCommand().equalsIgnoreCase("E")) {
+            if (taskField.isEditable()) {
+                taskField.setEditable(false);
+                taskField.setBackground(null);
+            } else {
+                taskField.setEditable(true);
+                this.taskField.requestFocus();
+            }
         }
     }
 }
