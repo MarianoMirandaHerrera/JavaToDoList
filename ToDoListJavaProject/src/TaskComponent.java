@@ -87,10 +87,13 @@ public class TaskComponent extends JPanel implements ActionListener {
         }
 
         if(e.getActionCommand().equalsIgnoreCase("E")){
+            
            if (taskField.isEditable()){
             taskField.setEditable(false);
+            taskField.setBackground(null);
            } else {
             taskField.setEditable(true);
+            this.taskField.requestFocus();
            }
         }
     }
