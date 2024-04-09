@@ -89,8 +89,7 @@ public class TaskComponent extends JPanel implements ActionListener {
             parentPanel.revalidate();
         }
 
-        if(e.getActionCommand().equalsIgnoreCase("E")){
-            
+        if(e.getActionCommand().equalsIgnoreCase("E")){ 
            if (taskField.isEditable()){
             taskField.setEditable(false);
             taskField.setBackground(null);

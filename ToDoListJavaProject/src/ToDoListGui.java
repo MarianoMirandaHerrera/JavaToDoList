@@ -10,7 +10,7 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
     private JPanel toDoListPanel, taskPanel, taskComponentPanel, toDoListComponentPanel;
     private ArrayList<ToDoListComponent> toDoLists;
     private ToDoListComponent currentToDoList;
-    private DatabaseConnection dbc;
+    public DatabaseConnection dbc;
 
     public ToDoListGui() {
         super("To Do List Application");
@@ -28,8 +28,8 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
     private void repopulate() {
         toDoLists = new ArrayList<>();
         dbc = new DatabaseConnection();
-
-
+        
+        dbc.addComponents();
     }
 
     private void addGuiComponents() {
@@ -110,8 +110,6 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
                 previousTask.getTaskField().setBackground(null);
             }
 
-            
-
             // make the task field request focus after creation
             taskComponent.getTaskField().requestFocus();
             repaint();
@@ -144,6 +142,8 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
                         toDoListComponentPanel.getComponentCount() - 2);
                 previousTask.getTaskField().setBackground(null);
             }
+
+            dbc.insertToDoList(toDoLists.size()+1);
 
             // make the task field request focus after creation
             toDoListComponent.getTaskField().requestFocus();
