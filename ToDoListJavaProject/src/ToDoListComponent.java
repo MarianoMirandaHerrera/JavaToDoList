@@ -7,11 +7,11 @@ import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
 public class ToDoListComponent extends JPanel implements ActionListener {
-    private JTextPane taskField;
+    JTextPane taskField;
     private JButton deleteButton;
     private JButton editButton;
     ArrayList<TaskComponent> tasks;
-    private int id;
+    int id;
 
     public JTextPane getTaskField() {
         return taskField;

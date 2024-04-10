@@ -10,7 +10,7 @@ public class TaskComponent extends JPanel implements ActionListener {
     private JTextPane taskField;
     private JButton deleteButton;
     private JButton editButton;
-    private int taskId;
+    int taskId;
 
     public JTextPane getTaskField() {
         return taskField;

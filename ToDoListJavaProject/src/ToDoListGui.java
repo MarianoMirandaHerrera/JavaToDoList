@@ -3,6 +3,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 
@@ -21,15 +23,70 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
         setResizable(false);
         setLayout(null);        
 
-        repopulate();
         addGuiComponents();
+        repopulate();
     }
 
     private void repopulate() {
         toDoLists = new ArrayList<>();
         dbc = new DatabaseConnection();
         
-        dbc.addComponents();
+        HashMap<Integer, String> temp = dbc.addComponents();
+        for (Map.Entry<Integer, String> entry : temp.entrySet()) {
+            int key = entry.getKey(); // Get the key (todolist_id)
+            String value = entry.getValue(); // Get the value (todolist_todolisttext)
+            
+            ToDoListComponent toDoListComponent = new ToDoListComponent(toDoListComponentPanel, key);
+            toDoListComponent.addMouseListener(this);
+            currentToDoList = toDoListComponent;
+            toDoListComponentPanel.add(toDoListComponent);
+            toDoLists.add(toDoListComponent);
+
+            // make the previous task appear disabled
+            if(toDoListComponentPanel.getComponentCount() > 1) {
+                ToDoListComponent previousTask = (ToDoListComponent) toDoListComponentPanel.getComponent(
+                        toDoListComponentPanel.getComponentCount() - 2);
+                previousTask.getTaskField().setBackground(null);
+            }
+            currentToDoList.taskField.setText("<html><s>"+ value + "</s></html>");
+            // make the task field request focus after creation
+            toDoListComponent.getTaskField().requestFocus();
+
+            HashMap<Integer, String> temp2 = dbc.addTaskComponent(key);
+            for (Map.Entry<Integer, String> sentry : temp.entrySet()) {
+                int key2 = sentry.getKey(); // Get the key (todolist_id)
+                String value2 = sentry.getValue(); // Get the value (todolist_todolisttext)
+                 // if their is a selected to do list and the the Add Task button is pressed
+                if(currentToDoList!=null){
+                // create a task component
+                    TaskComponent taskComponent = new TaskComponent(taskComponentPanel, currentToDoList.tasks.size());
+                    taskComponentPanel.add(taskComponent);
+                    currentToDoList.tasks.add(taskComponent);
+                    // make the previous task appear disabled
+                    if(taskComponentPanel.getComponentCount() > 1) {
+                        TaskComponent previousTask = (TaskComponent) taskComponentPanel.getComponent(
+                                taskComponentPanel.getComponentCount() - 2);
+                        previousTask.getTaskField().setBackground(null);
+                    }
+
+                    currentToDoList.taskField.setText("<html><s>"+ value2 + "</s></html>");
+
+                    // make the task field request focus after creation
+                    taskComponent.getTaskField().requestFocus();
+                    repaint();
+                    revalidate();
+                }
+
+                repaint();
+                revalidate();
+            }
+
+        if (currentToDoList!=null) {
+                for (int i = 0; i < currentToDoList.tasks.size(); i++){
+                    currentToDoList.tasks.get(i).setVisible(false);
+                }
+            }
+        }
     }
 
     private void addGuiComponents() {
@@ -100,7 +157,7 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
         // if their is a selected to do list and the the Add Task button is pressed
         if(currentToDoList!=null&&command.equalsIgnoreCase("Add Task")){
             // create a task component
-            TaskComponent taskComponent = new TaskComponent(taskComponentPanel, currentToDoList.tasks.size()+1);
+            TaskComponent taskComponent = new TaskComponent(taskComponentPanel, currentToDoList.tasks.size());
             taskComponentPanel.add(taskComponent);
             currentToDoList.tasks.add(taskComponent);
             // make the previous task appear disabled
@@ -109,6 +166,8 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
                         taskComponentPanel.getComponentCount() - 2);
                 previousTask.getTaskField().setBackground(null);
             }
+
+            dbc.insertTask(currentToDoList, taskComponent);
 
             // make the task field request focus after creation
             taskComponent.getTaskField().requestFocus();
@@ -130,7 +189,7 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
             // sets the currentToDoList to the newly created todolistcomponent
             // adds the todolist component to the panel
             // adds the todolistcomponent to the arraylist of todolists
-            ToDoListComponent toDoListComponent = new ToDoListComponent(toDoListComponentPanel, toDoLists.size()+1);
+            ToDoListComponent toDoListComponent = new ToDoListComponent(toDoListComponentPanel, toDoLists.size());
             toDoListComponent.addMouseListener(this);
             currentToDoList = toDoListComponent;
             toDoListComponentPanel.add(toDoListComponent);
@@ -143,7 +202,7 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
                 previousTask.getTaskField().setBackground(null);
             }
 
-            dbc.insertToDoList(toDoLists.size()+1);
+            dbc.insertToDoList(toDoLists.size());
 
             // make the task field request focus after creation
             toDoListComponent.getTaskField().requestFocus();
