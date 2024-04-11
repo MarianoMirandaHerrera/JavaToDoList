@@ -7,7 +7,7 @@ import java.awt.event.FocusListener;
 
 public class TaskComponent extends JPanel implements ActionListener {
     private JCheckBox checkBox;
-    private JTextPane taskField;
+    JTextPane taskField;
     private JButton deleteButton;
     private JButton editButton;
     int taskId;

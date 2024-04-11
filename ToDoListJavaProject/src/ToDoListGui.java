@@ -48,12 +48,13 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
                         toDoListComponentPanel.getComponentCount() - 2);
                 previousTask.getTaskField().setBackground(null);
             }
-            currentToDoList.taskField.setText("<html><s>"+ value + "</s></html>");
+            System.out.println(value);
+            currentToDoList.taskField.setText(value);
             // make the task field request focus after creation
             toDoListComponent.getTaskField().requestFocus();
 
             HashMap<Integer, String> temp2 = dbc.addTaskComponent(key);
-            for (Map.Entry<Integer, String> sentry : temp.entrySet()) {
+            for (Map.Entry<Integer, String> sentry : temp2.entrySet()) {
                 int key2 = sentry.getKey(); // Get the key (todolist_id)
                 String value2 = sentry.getValue(); // Get the value (todolist_todolisttext)
                  // if their is a selected to do list and the the Add Task button is pressed
@@ -69,7 +70,7 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
                         previousTask.getTaskField().setBackground(null);
                     }
 
-                    currentToDoList.taskField.setText("<html><s>"+ value2 + "</s></html>");
+                    taskComponent.taskField.setText(value2);
 
                     // make the task field request focus after creation
                     taskComponent.getTaskField().requestFocus();
@@ -80,12 +81,18 @@ public class ToDoListGui extends JFrame implements ActionListener, MouseListener
                 repaint();
                 revalidate();
             }
-
-        if (currentToDoList!=null) {
+            if (currentToDoList!=null) {
                 for (int i = 0; i < currentToDoList.tasks.size(); i++){
                     currentToDoList.tasks.get(i).setVisible(false);
                 }
             }
+        
+        }
+        
+        if (currentToDoList!=null) {
+                for (int i = 0; i < currentToDoList.tasks.size(); i++){
+                    currentToDoList.tasks.get(i).setVisible(true);
+                }
         }
     }
 
